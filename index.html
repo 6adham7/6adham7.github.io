@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adham — SFX / Sound Design</title>
+<link rel="icon" id="favicon" type="image/png" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -461,6 +462,66 @@
   document.getElementById('discordLabel').textContent = CONFIG.DISCORD_USERNAME;
   document.getElementById('discordPill').href = "https://discord.com/users/" + encodeURIComponent(CONFIG.DISCORD_USERNAME);
   document.getElementById('footerText').textContent = CONFIG.NAME + " — sound designer portfolio";
+
+  // ---------- animated favicon: a tiny live equalizer in the browser tab ----------
+  (function buildAnimatedFavicon(){
+    const link = document.getElementById('favicon');
+    if(!link) return;
+
+    const SIZE = 32;
+    const canvas = document.createElement('canvas');
+    canvas.width = SIZE; canvas.height = SIZE;
+    const ctx = canvas.getContext('2d');
+
+    const barCount = 4;
+    const barW = 3;
+    const gap = 2;
+    const totalW = barCount * barW + (barCount - 1) * gap;
+    const startX = Math.round((SIZE - totalW) / 2);
+    const baseline = SIZE - 6;
+    const maxH = SIZE - 11;
+
+    const staticMode = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function frame(t){
+      ctx.clearRect(0, 0, SIZE, SIZE);
+
+      // rounded black square backdrop so it reads clearly at tab size
+      ctx.fillStyle = '#000000';
+      ctx.beginPath();
+      if(ctx.roundRect){ ctx.roundRect(0, 0, SIZE, SIZE, 8); } else { ctx.rect(0, 0, SIZE, SIZE); }
+      ctx.fill();
+
+      ctx.fillStyle = '#FFFFFF';
+      for(let i = 0; i < barCount; i++){
+        const x = startX + i * (barW + gap);
+        const phase = i * 1.4;
+        const norm = staticMode
+          ? [0.4, 1, 0.65, 0.85][i]
+          : (Math.sin(t + phase) + 1) / 2 * 0.75 + 0.25; // keep a visible minimum
+        const h = Math.max(3, norm * maxH);
+        const y = baseline - h;
+        ctx.beginPath();
+        if(ctx.roundRect){ ctx.roundRect(x, y, barW, h, 1.5); } else { ctx.rect(x, y, barW, h); }
+        ctx.fill();
+      }
+
+      link.href = canvas.toDataURL('image/png');
+    }
+
+    if(staticMode){
+      frame(0);
+      return;
+    }
+
+    // Favicons don't need 60fps — updating ~8x/sec keeps it lively without
+    // taxing the page, and browsers throttle background tabs anyway.
+    let t = 0;
+    setInterval(() => {
+      t += 0.35;
+      frame(t);
+    }, 120);
+  })();
 
   // ---------- top ticker: continuous, non-stop, no jump on loop ----------
   // Instead of the classic CSS translateX(-50%) keyframe trick (which can
