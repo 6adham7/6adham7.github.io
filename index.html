@@ -1,11 +1,578 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adham — SFX / Sound Design</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg: #000000;
+    --panel: #0C0C0C;
+    --panel-2: #131313;
+    --line: #262626;
+    --ink: #F5F5F5;
+    --muted: #8C8C8C;
+    --white: #FFFFFF;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+
+  ::selection{ background:var(--white); color:#000; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font:inherit; cursor:pointer; }
+
+  .wrap{ max-width:1000px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- top ticker ---------- */
+  .marquee{
+    background:var(--white);
+    color:#000;
+    overflow:hidden;
+    white-space:nowrap;
+    padding:8px 0;
+    font-family:'JetBrains Mono', monospace;
+    font-weight:500;
+    font-size:0.82rem;
+    letter-spacing:0.06em;
+  }
+  .marquee-track{ display:inline-flex; animation:scroll 20s linear infinite; }
+  .marquee-track span{ padding:0 20px; display:inline-flex; align-items:center; gap:10px; text-transform:uppercase; }
+  @keyframes scroll{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
+
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(0,0,0,0.75);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{ display:flex; align-items:center; justify-content:center; height:64px; position:relative; }
+  .logo{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:1.1rem;
+    letter-spacing:0.02em; position:absolute; left:24px; display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{ width:7px; height:7px; border-radius:50%; background:var(--white); animation:pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:0.35; transform:scale(0.7); } }
+
+  header.hero{ padding:70px 0 10px; position:relative; }
+
+  /* ambient waveform behind hero — full-width canvas, continuous motion */
+  .wave-field{
+    position:absolute; left:0; right:0; top:-20px; width:100vw; height:520px;
+    opacity:0.55; pointer-events:none;
+    mask-image:linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 90%);
+    -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 90%);
+  }
+  .wave-field canvas{ display:block; width:100%; height:100%; }
+
+  .hero-inner{ position:relative; z-index:2; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:0.78rem; color:var(--muted);
+    letter-spacing:0.14em; text-transform:uppercase; margin-bottom:18px; text-align:center;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .eyebrow::before, .eyebrow::after{ content:''; width:24px; height:1px; background:var(--line); }
+
+  h1.name{
+    font-family:'Space Grotesk', sans-serif; font-weight:700;
+    font-size:clamp(2.6rem, 8vw, 4.6rem); text-align:center; line-height:1.05; color:var(--white);
+  }
+
+  .type-line{
+    text-align:center; font-family:'Space Grotesk', sans-serif; font-weight:600;
+    font-size:clamp(1.15rem, 3vw, 1.6rem); color:var(--muted);
+    margin-top:10px; min-height:2.2em;
+  }
+  .cursor{ display:inline-block; width:2px; background:var(--white); margin-left:2px; animation:blink 0.9s step-end infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .bio{ max-width:540px; margin:24px auto 0; text-align:center; color:var(--muted); font-size:1rem; line-height:1.7; }
+
+  .tab-row{
+    display:flex; justify-content:center; gap:12px;
+    margin-top:40px; flex-wrap:wrap;
+  }
+  .tab-btn{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
+    padding:13px 24px;
+    border-radius:100px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--ink);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .tab-btn:hover{ transform:translateY(-2px); border-color:var(--white); }
+  .tab-btn.active{
+    background:var(--white);
+    color:#000;
+    border-color:var(--white);
+    box-shadow:0 5px 0 var(--line);
+    transform:translateY(-2px);
+  }
+  .tab-btn svg{ width:17px; height:17px; flex-shrink:0; }
+  .tab-btn .chev{ width:13px; height:13px; transition:transform 0.25s ease; }
+  .tab-btn.active .chev{ transform:rotate(180deg); }
+  .discord-ic path{ fill:currentColor; }
+
+  /* ---------- panels ---------- */
+  .panels{ padding:10px 0 80px; }
+  .panel{
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transform:translateY(-8px);
+    transition:max-height 0.45s ease, opacity 0.35s ease, transform 0.35s ease, margin 0.45s ease;
+    margin-top:0;
+  }
+  .panel.open{
+    max-height:3000px;
+    opacity:1;
+    transform:translateY(0);
+    margin-top:40px;
+  }
+
+  .section-head{ text-align:center; margin-bottom:32px; }
+  .section-tag{ font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; }
+  h2{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:clamp(1.5rem, 4vw, 2rem); margin-top:6px; color:var(--white); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:20px; }
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; overflow:hidden;
+    display:block; width:100%; text-align:left; padding:0; font:inherit; color:inherit;
+    transition:transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .card:hover{ transform:translateY(-5px); box-shadow:0 10px 0 var(--line); border-color:var(--white); }
+  .thumb{ position:relative; aspect-ratio:16/9; width:100%; background:var(--panel-2); overflow:hidden; }
+  .thumb img{ width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(0.15); }
+  .play{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0); transition:background 0.2s ease; }
+  .card:hover .play{ background:rgba(0,0,0,0.35); }
+  .play svg{ width:44px; height:44px; opacity:0; transition:opacity 0.2s ease; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5)); }
+  .card:hover .play svg{ opacity:1; }
+  .card-body{ padding:15px 17px 18px; }
+  .card-body .num{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--muted); }
+  .card-body h3{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:1rem; margin-top:4px; }
+
+  .empty-state{
+    text-align:center; color:var(--muted); font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem; padding:40px 20px; border:1px dashed var(--line); border-radius:16px;
+  }
+
+  .about-card{ background:var(--panel); border:1px solid var(--line); border-radius:22px; padding:46px; max-width:680px; margin:0 auto; text-align:center; }
+  .about-card h3{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:clamp(1.4rem, 3.5vw, 1.9rem); margin-bottom:6px; color:var(--white); }
+  .about-card .subhead{ font-family:'JetBrains Mono', monospace; color:var(--muted); font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:18px; }
+  .about-card p{ color:var(--muted); font-size:1.02rem; line-height:1.75; }
+  .about-meta{ display:flex; justify-content:center; gap:28px; margin-top:26px; flex-wrap:wrap; }
+  .about-meta div{ text-align:center; }
+  .about-meta .k{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; }
+  .about-meta .v{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:1.05rem; color:var(--white); margin-top:4px; }
+
+  .contact-card{ background:var(--white); color:#000; border-radius:22px; padding:48px; text-align:center; box-shadow:0 8px 0 var(--line); max-width:600px; margin:0 auto; }
+  .contact-card h2{ color:#000; }
+  .contact-card p{ color:#4a4a4a; margin-top:8px; }
+  .discord-pill{
+    display:inline-flex; align-items:center; gap:10px; background:#000; color:#fff;
+    padding:14px 26px; border-radius:100px; font-family:'JetBrains Mono', monospace; font-size:0.92rem; font-weight:500; margin-top:24px;
+    transition:transform 0.15s ease;
+  }
+  .discord-pill:hover{ transform:translateY(-2px); }
+  .discord-pill svg{ width:19px; height:19px; }
+
+  footer{ padding:30px 0 46px; text-align:center; color:var(--muted); font-size:0.82rem; font-family:'JetBrains Mono', monospace; }
+
+  /* ---------- video modal ---------- */
+  .video-modal{
+    position:fixed; inset:0; z-index:200;
+    display:none;
+    align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.85);
+    padding:20px;
+  }
+  .video-modal.open{ display:flex; }
+  .video-modal-inner{
+    width:100%; max-width:860px;
+    background:#000;
+    border-radius:16px;
+    overflow:hidden;
+    position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    border:1px solid var(--line);
+  }
+  .video-modal-inner .frame-wrap{ position:relative; width:100%; aspect-ratio:16/9; }
+  .video-modal-inner iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .modal-close{
+    position:absolute; top:-44px; right:0;
+    background:#fff; color:#000;
+    width:34px; height:34px; border-radius:50%;
+    border:none; display:flex; align-items:center; justify-content:center;
+    font-size:1.05rem; font-weight:700;
+  }
+  .modal-close:hover{ background:#ccc; }
+
+  .watch-fallback{
+    display:block; text-align:center; padding:14px 12px;
+    font-family:'JetBrains Mono', monospace; font-size:0.82rem;
+    color:#B3B3B3; background:#0C0C0C; border-top:1px solid var(--line);
+    transition:color 0.2s ease;
+  }
+  .watch-fallback:hover{ color:#fff; }
+
+  @media (max-width:640px){
+    .about-card, .contact-card{ padding:30px 22px; }
+    .about-meta{ gap:20px; }
+  }
+</style>
 </head>
 <body>
-    Testing
+
+<!--
+  ============================================================
+  EDIT YOUR INFO HERE — nothing below this box needs to change
+  ============================================================
+  1. Change the values inside the { } below.
+  2. Keep the quotes "" around text.
+  3. To add/remove a YouTube video, add/remove a line inside YOUTUBE_LINKS.
+     Any normal YouTube link works (youtu.be/... or youtube.com/watch?v=...).
+  4. Save the file and refresh the page (or push to GitHub Pages) to see changes.
+-->
+<script>
+  const CONFIG = {
+    NAME: "Adham",
+    AGE: "17",
+    DISCORD_USERNAME: "6art7",          // shown + linked as your Discord tag
+    TAGLINE_WORDS: ["impact.", "atmosphere.", "immersion.", "worlds."], // typing animation words
+
+    BIO: "I create sound effects and audio for games — from punchy impacts and combat hits to layered ambience. I turn gameplay moments into something you can feel.",
+
+    ABOUT_SUBHEAD: "SOUND DESIGNER",
+    ABOUT_TEXT: "I make sound effects for games — hits, abilities, footsteps, ambience, whatever a scene needs. I care about audio that actually reacts to what's happening on screen, not just noise layered on top.",
+
+    // Add or remove links freely — the site updates the video grid automatically.
+    YOUTUBE_LINKS: [
+      "https://youtu.be/jz-xNoDHzq4",
+      "https://youtu.be/DqdIJWqTFCs",
+      "https://youtu.be/XczC2Jdu-dY",
+      "https://youtu.be/2J0xOPq_nvs"
+    ]
+  };
+</script>
+<!-- ============================================================ -->
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>SOUND DESIGN ✦ SFX ✦ COMBAT AUDIO ✦ AMBIENCE ✦ SOUND DESIGN ✦ SFX ✦ COMBAT AUDIO ✦ AMBIENCE</span>
+    <span>SOUND DESIGN ✦ SFX ✦ COMBAT AUDIO ✦ AMBIENCE ✦ SOUND DESIGN ✦ SFX ✦ COMBAT AUDIO ✦ AMBIENCE</span>
+  </div>
+</div>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="dot"></span><span id="navName">ADHAM</span></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wave-field" id="waveField" aria-hidden="true"><canvas id="waveCanvas"></canvas></div>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">Sound Designer</div>
+    <h1 class="name">Hi, I'm <span id="heroName">Adham</span></h1>
+    <div class="type-line"><span id="typed"></span><span class="cursor">&nbsp;</span></div>
+    <p class="bio" id="bioText"></p>
+
+    <div class="tab-row" role="tablist">
+      <button class="tab-btn" data-panel="work" role="tab" aria-selected="false" aria-controls="panel-work">
+        See My Work
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="tab-btn" data-panel="about" role="tab" aria-selected="false" aria-controls="panel-about">
+        About Me
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="tab-btn" data-panel="contact" role="tab" aria-selected="false" aria-controls="panel-contact">
+        <svg class="discord-ic" viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+        Get In Touch
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="panels wrap">
+
+  <div class="panel" id="panel-work">
+    <div class="section-head">
+      <div class="section-tag" id="workCount">Portfolio</div>
+      <h2>See My Work</h2>
+    </div>
+    <div class="grid" id="videoGrid"></div>
+  </div>
+
+  <div class="panel" id="panel-about">
+    <div class="section-head">
+      <div class="section-tag">About</div>
+      <h2>About Me</h2>
+    </div>
+    <div class="about-card">
+      <h3 id="aboutName">Hi, I'm Adham</h3>
+      <div class="subhead" id="aboutSubhead"></div>
+      <p id="aboutText"></p>
+      <div class="about-meta">
+        <div>
+          <div class="k">Age</div>
+          <div class="v" id="aboutAge"></div>
+        </div>
+        <div>
+          <div class="k">Discord</div>
+          <div class="v" id="aboutDiscord"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-contact">
+    <div class="section-head">
+      <div class="section-tag">Contact</div>
+      <h2>Get In Touch</h2>
+    </div>
+    <div class="contact-card">
+      <h2>Let's talk</h2>
+      <p>Message me on Discord about your project.</p>
+      <a class="discord-pill" id="discordPill" href="#" rel="noopener noreferrer">
+        <svg viewBox="0 0 127.14 96.36"><path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+        <span id="discordLabel">6art7</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="video-modal" id="videoModal" role="dialog" aria-modal="true">
+  <div class="video-modal-inner">
+    <button class="modal-close" id="modalClose" aria-label="Close video">✕</button>
+    <div class="frame-wrap">
+      <iframe id="modalFrame" src="" title="SFX video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <a id="watchOnYoutube" class="watch-fallback" href="#" target="_blank" rel="noopener noreferrer">
+      Can't see the video? Watch it on YouTube →
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap" id="footerText"></div>
+</footer>
+
+<script>
+  // ---------- helpers ----------
+  function extractYouTubeId(url){
+    try{
+      const u = new URL(url.trim());
+      if(u.hostname.includes('youtu.be')){
+        return u.pathname.slice(1).split('/')[0];
+      }
+      if(u.hostname.includes('youtube.com')){
+        if(u.searchParams.get('v')) return u.searchParams.get('v');
+        const parts = u.pathname.split('/').filter(Boolean);
+        const i = parts.findIndex(p => p === 'embed' || p === 'shorts');
+        if(i !== -1 && parts[i+1]) return parts[i+1];
+      }
+    }catch(e){ /* not a valid URL */ }
+    return null;
+  }
+
+  // ---------- fill in text content from CONFIG ----------
+  document.getElementById('navName').textContent = CONFIG.NAME.toUpperCase();
+  document.getElementById('heroName').textContent = CONFIG.NAME;
+  document.getElementById('bioText').textContent = CONFIG.BIO;
+  document.getElementById('aboutName').textContent = "Hi, I'm " + CONFIG.NAME;
+  document.getElementById('aboutSubhead').textContent = CONFIG.ABOUT_SUBHEAD;
+  document.getElementById('aboutText').textContent = CONFIG.ABOUT_TEXT;
+  document.getElementById('aboutAge').textContent = CONFIG.AGE;
+  document.getElementById('aboutDiscord').textContent = CONFIG.DISCORD_USERNAME;
+  document.getElementById('discordLabel').textContent = CONFIG.DISCORD_USERNAME;
+  document.getElementById('discordPill').href = "https://discord.com/users/" + encodeURIComponent(CONFIG.DISCORD_USERNAME);
+  document.getElementById('footerText').textContent = CONFIG.NAME + " — sound designer portfolio";
+
+  // ---------- typing effect ----------
+  const words = (CONFIG.TAGLINE_WORDS && CONFIG.TAGLINE_WORDS.length) ? CONFIG.TAGLINE_WORDS : ["impact."];
+  const typedEl = document.getElementById('typed');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let wi = 0, ci = 0, deleting = false;
+
+  function tick(){
+    const word = words[wi];
+    if(!deleting){
+      ci++;
+      typedEl.textContent = "I craft " + word.slice(0, ci);
+      if(ci === word.length){ deleting = true; setTimeout(tick, 1400); return; }
+    } else {
+      ci--;
+      typedEl.textContent = "I craft " + word.slice(0, ci);
+      if(ci === 0){ deleting = false; wi = (wi + 1) % words.length; }
+    }
+    setTimeout(tick, deleting ? 45 : 75);
+  }
+  if(reduced){ typedEl.textContent = "I craft " + words[0]; } else { tick(); }
+
+  // ---------- ambient waveform (decorative, behind hero) ----------
+  // A continuous traveling wave drawn on a full-width canvas — bars never
+  // "pop in" from nothing, the wave is always mid-motion, looping seamlessly.
+  (function buildWaveField(){
+    const field = document.getElementById('waveField');
+    const canvas = document.getElementById('waveCanvas');
+    if(!field || !canvas) return;
+    if(reduced){ field.style.display = 'none'; return; }
+
+    const ctx = canvas.getContext('2d');
+    let W, H, barW, gap, barCount;
+
+    function resize(){
+      const rect = field.getBoundingClientRect();
+      W = Math.ceil(rect.width);
+      H = Math.ceil(rect.height);
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      barW = W < 600 ? 3 : 4;
+      gap = W < 600 ? 4 : 6;
+      barCount = Math.floor(W / (barW + gap));
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Each bar is driven by a continuous phase so nothing ever starts from
+    // a dead stop — the whole field is one uninterrupted, looping wave.
+    let t = 0;
+    function draw(){
+      t += 0.028;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#FFFFFF';
+
+      for(let i = 0; i < barCount; i++){
+        const x = i * (barW + gap);
+        // overlapping sine waves of different speed/phase per bar column
+        // gives a rolling, non-random, ever-moving profile with no jumps
+        const phase = i * 0.35;
+        const wave =
+          Math.sin(t + phase) * 0.5 +
+          Math.sin(t * 0.6 + phase * 1.7) * 0.3 +
+          Math.sin(t * 1.4 + phase * 0.5) * 0.2;
+        const norm = (wave + 1) / 2; // 0..1
+        const minH = H * 0.06;
+        const maxH = H * 0.92;
+        const h = minH + norm * (maxH - minH);
+
+        ctx.globalAlpha = 0.35 + norm * 0.5;
+        ctx.beginPath();
+        const r = barW / 2;
+        const y = H - h;
+        if(ctx.roundRect){
+          ctx.roundRect(x, y, barW, h, r);
+        } else {
+          ctx.rect(x, y, barW, h);
+        }
+        ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
+
+  // ---------- build video grid dynamically from CONFIG.YOUTUBE_LINKS ----------
+  (function buildVideoGrid(){
+    const grid = document.getElementById('videoGrid');
+    const countLabel = document.getElementById('workCount');
+    const ids = CONFIG.YOUTUBE_LINKS.map(extractYouTubeId).filter(Boolean);
+
+    countLabel.textContent = "Portfolio — " + ids.length + (ids.length === 1 ? " video" : " videos");
+
+    if(ids.length === 0){
+      grid.innerHTML = '<div class="empty-state">No videos yet — add YouTube links to CONFIG.YOUTUBE_LINKS at the top of the file.</div>';
+      return;
+    }
+
+    ids.forEach((id, index) => {
+      const card = document.createElement('button');
+      card.className = 'card';
+      card.dataset.video = id;
+      card.setAttribute('aria-haspopup', 'dialog');
+
+      const num = String(index + 1).padStart(2, '0');
+
+      card.innerHTML = `
+        <div class="thumb">
+          <img src="https://img.youtube.com/vi/${id}/hqdefault.jpg" alt="" referrerpolicy="no-referrer" loading="lazy">
+          <div class="play"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="white" stroke-width="1.5"/><path d="M10 8L16 12L10 16V8Z" fill="white"/></svg></div>
+        </div>
+        <div class="card-body">
+          <div class="num">${num}</div>
+          <h3>SFX showcase</h3>
+        </div>`;
+
+      card.addEventListener('click', () => openVideo(id));
+      grid.appendChild(card);
+    });
+  })();
+
+  // ---------- video modal ----------
+  const modal = document.getElementById('videoModal');
+  const modalFrame = document.getElementById('modalFrame');
+  const modalClose = document.getElementById('modalClose');
+  const watchFallback = document.getElementById('watchOnYoutube');
+
+  function openVideo(id){
+
+    const origin = encodeURIComponent(window.location.origin);
+    modalFrame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&origin=${origin}`;
+    watchFallback.href = `https://www.youtube.com/watch?v=${id}`;
+    modal.classList.add('open');
+  }
+  function closeVideo(){
+    modal.classList.remove('open');
+    modalFrame.src = '';
+  }
+  modalClose.addEventListener('click', closeVideo);
+  modal.addEventListener('click', (e) => { if(e.target === modal) closeVideo(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeVideo(); });
+
+  // ---------- tab buttons -> toggle panels ----------
+  const buttons = document.querySelectorAll('.tab-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = 'panel-' + btn.dataset.panel;
+      const panel = document.getElementById(targetId);
+      const isOpen = panel.classList.contains('open');
+
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('open'));
+      buttons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+
+      if(!isOpen){
+        panel.classList.add('open');
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        setTimeout(() => {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 120);
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
