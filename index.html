@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adham — SFX / Sound Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
   :root{
     --bg: #000000;
     --panel: #0C0C0C;
@@ -45,9 +46,8 @@
     font-size:0.82rem;
     letter-spacing:0.06em;
   }
-  .marquee-track{ display:inline-flex; animation:scroll 20s linear infinite; }
-  .marquee-track span{ padding:0 20px; display:inline-flex; align-items:center; gap:10px; text-transform:uppercase; }
-  @keyframes scroll{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
+  .marquee-track{ display:inline-flex; will-change:transform; }
+  .marquee-track .mq-item{ padding:0 20px; display:inline-flex; align-items:center; gap:10px; text-transform:uppercase; flex-shrink:0; }
 
   nav{
     position:sticky; top:0; z-index:50;
@@ -82,6 +82,45 @@
     display:flex; align-items:center; justify-content:center; gap:10px;
   }
   .eyebrow::before, .eyebrow::after{ content:''; width:24px; height:1px; background:var(--line); }
+
+  /* tiny live level-meter next to the eyebrow tag */
+  .live-meter{ display:inline-flex; align-items:flex-end; gap:2px; height:11px; }
+  .live-meter i{
+    display:block; width:2.5px; background:var(--muted); border-radius:1px;
+    animation:meterBounce 0.9s ease-in-out infinite;
+  }
+  .live-meter i:nth-child(1){ height:40%; animation-delay:0s; }
+  .live-meter i:nth-child(2){ height:100%; animation-delay:0.15s; }
+  .live-meter i:nth-child(3){ height:65%; animation-delay:0.3s; }
+  .live-meter i:nth-child(4){ height:85%; animation-delay:0.45s; }
+  @keyframes meterBounce{
+    0%,100%{ transform:scaleY(0.35); opacity:0.5; }
+    50%{ transform:scaleY(1); opacity:1; }
+  }
+
+  /* animated skills strip — signals range of craft at a glance */
+  .skills-strip{
+    display:flex; justify-content:center; flex-wrap:wrap; gap:10px;
+    margin-top:28px; max-width:640px; margin-left:auto; margin-right:auto;
+  }
+  .skill-pill{
+    display:inline-flex; align-items:center; gap:7px;
+    padding:8px 16px; border-radius:100px;
+    border:1px solid var(--line); background:var(--panel);
+    font-family:'JetBrains Mono', monospace; font-size:0.78rem; color:var(--muted);
+    letter-spacing:0.02em;
+    opacity:0; transform:translateY(10px);
+    animation:pillIn 0.5s ease forwards;
+    transition:border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .skill-pill:hover{ border-color:var(--white); color:var(--ink); transform:translateY(-2px); }
+  .skill-pill svg{ width:13px; height:13px; flex-shrink:0; opacity:0.8; }
+  .skill-pill .sp-dot{
+    width:5px; height:5px; border-radius:50%; background:var(--white);
+    animation:pillPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pillIn{ to{ opacity:1; transform:translateY(0); } }
+  @keyframes pillPulse{ 0%,100%{ opacity:0.3; } 50%{ opacity:1; } }
 
   h1.name{
     font-family:'Space Grotesk', sans-serif; font-weight:700;
@@ -155,8 +194,12 @@
     background:var(--panel); border:1px solid var(--line); border-radius:16px; overflow:hidden;
     display:block; width:100%; text-align:left; padding:0; font:inherit; color:inherit;
     transition:transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    opacity:0; transform:translateY(16px);
   }
+  .card.reveal{ animation:cardIn 0.5s ease forwards; }
+  @keyframes cardIn{ to{ opacity:1; transform:translateY(0); } }
   .card:hover{ transform:translateY(-5px); box-shadow:0 10px 0 var(--line); border-color:var(--white); }
+  .card.reveal:hover{ transform:translateY(-5px); }
   .thumb{ position:relative; aspect-ratio:16/9; width:100%; background:var(--panel-2); overflow:hidden; }
   .thumb img{ width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(0.15); }
   .play{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0); transition:background 0.2s ease; }
@@ -261,6 +304,9 @@
     ABOUT_SUBHEAD: "SOUND DESIGNER",
     ABOUT_TEXT: "I make sound effects for games — hits, abilities, footsteps, ambience, whatever a scene needs. I care about audio that actually reacts to what's happening on screen, not just noise layered on top.",
 
+    // Shown as little pills under the intro — add, remove, or rename freely.
+    SKILLS: ["Impacts", "Foley", "Ambience", "Combat Audio", "UI", "Mixing"],
+
     // Add or remove links freely — the site updates the video grid automatically.
     YOUTUBE_LINKS: [
       "https://youtu.be/jz-xNoDHzq4",
@@ -273,9 +319,8 @@
 <!-- ============================================================ -->
 
 <div class="marquee">
-  <div class="marquee-track">
-    <span>SOUND DESIGN ✦ SFX ✦ COMBAT AUDIO ✦ AMBIENCE ✦ SOUND DESIGN ✦ SFX ✦ COMBAT AUDIO ✦ AMBIENCE</span>
-    <span>SOUND DESIGN ✦ SFX ✦ COMBAT AUDIO ✦ AMBIENCE ✦ SOUND DESIGN ✦ SFX ✦ COMBAT AUDIO ✦ AMBIENCE</span>
+  <div class="marquee-track" id="marqueeTrack">
+    <span class="mq-item">SOUND DESIGN ✦ SFX ✦ COMBAT AUDIO ✦ AMBIENCE</span>
   </div>
 </div>
 
@@ -288,10 +333,20 @@
 <header class="hero">
   <div class="wave-field" id="waveField" aria-hidden="true"><canvas id="waveCanvas"></canvas></div>
   <div class="wrap hero-inner">
-    <div class="eyebrow">Sound Designer</div>
+    <div class="eyebrow">
+      <span class="live-meter" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+      </span>
+      Sound Designer
+      <span class="live-meter" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+      </span>
+    </div>
     <h1 class="name">Hi, I'm <span id="heroName">Adham</span></h1>
     <div class="type-line"><span id="typed"></span><span class="cursor">&nbsp;</span></div>
     <p class="bio" id="bioText"></p>
+
+    <div class="skills-strip" id="skillsStrip" aria-label="Areas of focus"></div>
 
     <div class="tab-row" role="tablist">
       <button class="tab-btn" data-panel="work" role="tab" aria-selected="false" aria-controls="panel-work">
@@ -407,6 +462,70 @@
   document.getElementById('discordPill').href = "https://discord.com/users/" + encodeURIComponent(CONFIG.DISCORD_USERNAME);
   document.getElementById('footerText').textContent = CONFIG.NAME + " — sound designer portfolio";
 
+  // ---------- top ticker: continuous, non-stop, no jump on loop ----------
+  // Instead of the classic CSS translateX(-50%) keyframe trick (which can
+  // visibly "snap" if the two halves ever render at slightly different
+  // widths — e.g. while a webfont is swapping in), this measures the exact
+  // pixel width of one copy and uses (elapsed * speed) % singleWidth to
+  // position it. That value can never drift or mismatch, so the strip
+  // scrolls left forever and the next copy always slides in from the right
+  // at exactly the right moment — perfectly seamless, no teleporting.
+  (function buildMarquee(){
+    const track = document.getElementById('marqueeTrack');
+    const container = track ? track.parentElement : null;
+    if(!track || !container) return;
+
+    const template = track.innerHTML; // one copy of the ticker content
+    let singleWidth = 0;
+
+    function fillTrack(){
+      track.innerHTML = template;
+      singleWidth = track.firstElementChild.getBoundingClientRect().width;
+      // Keep adding copies until the strip comfortably covers container
+      // width plus one extra copy, so there's never a gap on the right.
+      let guard = 0;
+      while(track.scrollWidth < container.clientWidth + singleWidth * 2 && guard < 50){
+        track.insertAdjacentHTML('beforeend', template);
+        guard++;
+      }
+    }
+    fillTrack();
+    window.addEventListener('resize', fillTrack);
+    if(window.ResizeObserver){ new ResizeObserver(fillTrack).observe(container); }
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(fillTrack); }
+
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ return; } // stay static
+
+    const SPEED = 55; // px per second
+    let elapsed = 0;
+    let last = performance.now();
+
+    function step(now){
+      const dt = Math.min(now - last, 50) / 1000;
+      last = now;
+      elapsed += dt * SPEED;
+      if(singleWidth > 0){
+        const x = -(elapsed % singleWidth);
+        track.style.transform = `translateX(${x}px)`;
+      }
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
+
+  // ---------- animated skills strip ----------
+  (function buildSkillsStrip(){
+    const strip = document.getElementById('skillsStrip');
+    const skills = (CONFIG.SKILLS && CONFIG.SKILLS.length) ? CONFIG.SKILLS : [];
+    skills.forEach((label, i) => {
+      const pill = document.createElement('span');
+      pill.className = 'skill-pill';
+      pill.style.animationDelay = (0.5 + i * 0.09) + 's';
+      pill.innerHTML = `<span class="sp-dot" style="animation-delay:${(i * 0.25)}s"></span>${label}`;
+      strip.appendChild(pill);
+    });
+  })();
+
   // ---------- typing effect ----------
   const words = (CONFIG.TAGLINE_WORDS && CONFIG.TAGLINE_WORDS.length) ? CONFIG.TAGLINE_WORDS : ["impact."];
   const typedEl = document.getElementById('typed');
@@ -429,8 +548,10 @@
   if(reduced){ typedEl.textContent = "I craft " + words[0]; } else { tick(); }
 
   // ---------- ambient waveform (decorative, behind hero) ----------
-  // A continuous traveling wave drawn on a full-width canvas — bars never
-  // "pop in" from nothing, the wave is always mid-motion, looping seamlessly.
+  // Overlapping sine waves of different speed/phase per bar column — an
+  // organic, ever-moving profile behind the hero. Nothing ever pops in or
+  // stalls: each bar is mid-motion continuously, the whole field is one
+  // uninterrupted, looping ripple.
   (function buildWaveField(){
     const field = document.getElementById('waveField');
     const canvas = document.getElementById('waveCanvas');
@@ -438,15 +559,15 @@
     if(reduced){ field.style.display = 'none'; return; }
 
     const ctx = canvas.getContext('2d');
-    let W, H, barW, gap, barCount;
+    let W = 0, H = 0, barW, gap, barCount;
 
     function resize(){
       const rect = field.getBoundingClientRect();
       W = Math.ceil(rect.width);
       H = Math.ceil(rect.height);
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = W * dpr;
-      canvas.height = H * dpr;
+      canvas.width = Math.max(W, 1) * dpr;
+      canvas.height = Math.max(H, 1) * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       barW = W < 600 ? 3 : 4;
@@ -455,19 +576,26 @@
     }
     resize();
     window.addEventListener('resize', resize);
+    // Self-heals if the very first measurement ever comes back as 0 (e.g. a
+    // slow-loading stylesheet) — no dependency on the user resizing anything.
+    if(window.ResizeObserver){ new ResizeObserver(resize).observe(field); }
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(resize); }
 
-    // Each bar is driven by a continuous phase so nothing ever starts from
-    // a dead stop — the whole field is one uninterrupted, looping wave.
+    let last = performance.now();
     let t = 0;
-    function draw(){
-      t += 0.028;
+
+    function draw(now){
+      const dt = Math.min(now - last, 50) / 1000;
+      last = now;
+      t += dt;
+
+      if(W === 0 || H === 0){ requestAnimationFrame(draw); return; }
+
       ctx.clearRect(0, 0, W, H);
       ctx.fillStyle = '#FFFFFF';
 
       for(let i = 0; i < barCount; i++){
         const x = i * (barW + gap);
-        // overlapping sine waves of different speed/phase per bar column
-        // gives a rolling, non-random, ever-moving profile with no jumps
         const phase = i * 0.35;
         const wave =
           Math.sin(t + phase) * 0.5 +
@@ -537,7 +665,10 @@
   const watchFallback = document.getElementById('watchOnYoutube');
 
   function openVideo(id){
-
+    // youtube-nocookie.com + an explicit origin avoids most embed
+    // (error 153 / "player configuration error") issues; the fallback
+    // link below the player always works even if embedding is blocked
+    // for a specific video or environment.
     const origin = encodeURIComponent(window.location.origin);
     modalFrame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&origin=${origin}`;
     watchFallback.href = `https://www.youtube.com/watch?v=${id}`;
@@ -569,6 +700,17 @@
         setTimeout(() => {
           panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 120);
+
+        if(targetId === 'panel-work'){
+          const cards = panel.querySelectorAll('.card');
+          cards.forEach(c => c.classList.remove('reveal'));
+          // force reflow so the animation restarts every time the tab reopens
+          void panel.offsetWidth;
+          cards.forEach((c, i) => {
+            c.style.animationDelay = (i * 0.07) + 's';
+            c.classList.add('reveal');
+          });
+        }
       }
     });
   });
