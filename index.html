@@ -4,24 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>6art7 – SFX Sound Designer</title>
-<meta name="description" content="Custom sound effects for games: impacts, footsteps, interface, creatures and everything in between.">
+<meta name="description" content="Custom sound effects for Roblox games, built to make every moment feel better to play.">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="6art7">
 <meta property="og:title" content="6art7 – SFX Sound Designer">
-<meta property="og:description" content="Custom sound effects for games: impacts, footsteps, interface, creatures and everything in between.">
+<meta property="og:description" content="Custom sound effects for Roblox games, built to make every moment feel better to play.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="6art7 – SFX Sound Designer">
-<meta name="twitter:description" content="Custom sound effects for games: impacts, footsteps, interface, creatures and everything in between.">
+<meta name="twitter:description" content="Custom sound effects for Roblox games, built to make every moment feel better to play.">
 <!-- ADD WHEN YOUR SITE IS LIVE (needs your real absolute URLs):
 <link rel="canonical" href="https://YOUR-DOMAIN/">
 <meta property="og:url" content="https://YOUR-DOMAIN/">
 <meta property="og:image" content="https://YOUR-DOMAIN/og-image.png">  (1200x630 image)
 <meta name="twitter:card" content="summary_large_image"> -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Ctext x='30' y='46' font-family='Arial,sans-serif' font-weight='800' font-size='40' text-anchor='middle' fill='%23fff'%3E6%3C/text%3E%3Ccircle cx='51' cy='47' r='5' fill='%23c01530'/%3E%3C/svg%3E">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"6art7","description":"Custom sound effects for games: impacts, footsteps, interface, creatures and everything in between."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"6art7","description":"Custom sound effects for Roblox games, built to make every moment feel better to play."}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
@@ -95,7 +95,7 @@ p{color:var(--muted);max-width:60ch;margin-bottom:1em}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
 .card[hidden]{display:none}
 .card:hover{transform:translateY(-6px);border-color:#4a4a4a;box-shadow:0 20px 40px -24px #fff4}
-.art{position:relative;aspect-ratio:16/10;background:#080808;overflow:hidden}
+.art{position:relative;aspect-ratio:16/9;background:#080808;overflow:hidden}
 .art img,.art i{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s}
 .card:hover .art img,.card:hover .art i{transform:scale(1.06)}
 .art em{position:absolute;left:18px;bottom:8px;font:800 3.6rem/1 var(--font);font-style:normal;color:#ffffff14;letter-spacing:-.05em}
@@ -103,13 +103,30 @@ p{color:var(--muted);max-width:60ch;margin-bottom:1em}
 .cb{padding:20px;display:flex;flex-direction:column;gap:6px;flex:1}
 .cb b{font-size:1.15rem;font-weight:700;letter-spacing:-.02em;overflow-wrap:anywhere}
 .cb p{font-size:.9rem;line-height:1.6;margin:0 0 12px;overflow-wrap:anywhere}
-.pl{display:flex;align-items:center;gap:12px;margin-top:auto}
-.pb{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:#fff;cursor:pointer;display:grid;place-items:center;transition:transform .2s,background .2s}
-.pb:hover{transform:scale(1.08);background:#e4e4e7}
-.pb:disabled{opacity:.3;cursor:not-allowed;transform:none}
-.pb svg{width:14px;height:14px;fill:#000}
-.wf{flex:1;height:38px;min-width:0;cursor:pointer;touch-action:pan-y}
-.tm{flex:none;font-size:.75rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;min-width:92px;text-align:right}
+.art video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;opacity:0;transition:opacity .3s}
+.art.on video{opacity:1}
+.art.on i,.art.on em{opacity:0}
+.art:fullscreen{aspect-ratio:auto;border-radius:0;background:#000}
+.art:-webkit-full-screen{aspect-ratio:auto;background:#000}
+.vbig{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;border:1px solid #ffffff55;background:#000a;display:grid;place-items:center;cursor:pointer;z-index:2;transition:transform .25s,background .25s,opacity .25s}
+.vbig:hover:not(:disabled){transform:scale(1.08);background:#fff}
+.vbig:hover:not(:disabled) svg{fill:#000}
+.vbig:disabled{opacity:.4;cursor:not-allowed}
+.art.pl .vbig{opacity:0;pointer-events:none}
+.vbig svg,.vc svg{width:18px;height:18px;fill:#fff;display:block}
+.vc{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;align-items:center;gap:8px;padding:28px 12px 10px;background:linear-gradient(#0000,#000c);transition:opacity .3s}
+.vc button{background:none;border:0;padding:6px;border-radius:50%;cursor:pointer;display:grid;place-items:center;transition:background .2s}
+.vc button:hover{background:#ffffff26}
+.vs{flex:1;min-width:0;height:24px;display:flex;align-items:center;cursor:pointer;touch-action:pan-y;border-radius:4px}
+.vb{display:block;width:100%;height:4px;background:#ffffff40;border-radius:4px;overflow:hidden;position:relative;transition:height .2s}
+.vs:hover .vb,.vs:focus-visible .vb{height:7px}
+.vb u{position:absolute;inset:0;background:#fff;transform-origin:left;transform:scaleX(0)}
+.vt{font-size:.75rem;font-weight:600;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vmsg{position:absolute;left:0;right:0;top:calc(50% + 46px);z-index:2;text-align:center;font-size:.85rem;font-weight:600;color:var(--muted);padding:0 18px}
+.art.pl:not(.show):not(:focus-within) .vc,.art:not(.on):not(:focus-within) .vc{opacity:0;pointer-events:none}
+.art .tg{z-index:3}
+.art[aria-busy=true]::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px;border:2px solid #ffffff44;border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite;z-index:4;pointer-events:none}
+@keyframes sp{to{transform:rotate(360deg)}}
 .lk{margin-top:14px;align-self:flex-start;padding:8px 16px;font-size:.8rem}
 .more{margin-top:26px}
 .ab{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:start;margin-top:8px}
@@ -119,7 +136,7 @@ p{color:var(--muted);max-width:60ch;margin-bottom:1em}
 .steps div:hover{border-color:#4a4a4a}
 .steps small{grid-row:span 2;align-self:center;color:var(--muted);font-weight:700;letter-spacing:.15em}
 .steps span{color:var(--muted);font-size:.88rem}
-.ct{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;margin-top:28px}
+.ct{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;margin-top:28px;max-width:560px}
 .cc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:6px}
 .cc:hover{border-color:#4a4a4a}
 .cc small{color:var(--muted);font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
@@ -129,7 +146,6 @@ p{color:var(--muted);max-width:60ch;margin-bottom:1em}
 
 :focus-visible{outline:2px solid #fff;outline-offset:3px}
 main:focus{outline:none}
-.wf:focus-visible{outline-offset:2px;border-radius:4px}
 .skip{position:fixed;left:12px;top:-70px;z-index:100;background:#fff;color:#000;padding:10px 18px;border-radius:999px;font-weight:600;font-size:.85rem;text-decoration:none;transition:top .2s}
 .skip:focus{top:calc(10px + env(safe-area-inset-top,0px))}
 img{max-width:100%}
@@ -180,9 +196,9 @@ footer a:hover{color:#fff}
 <main id="main">
 <header class="hero" id="home">
   <div>
-    <div class="tag">SFX Sound Designer</div>
+    <div class="tag">Roblox SFX Artist</div>
     <h1>I make games<br>sound <span class="rot" id="rot"><span>heavy.</span><span>alive.</span><span>terrifying.</span><span>massive.</span><span>real.</span></span></h1>
-    <p>Custom sound effects for games: impacts, footsteps, interface, creatures and everything in between.</p>
+    <p>Custom sound effects for Roblox games, built to make every moment feel better to play.</p>
     <div class="cta"><a class="btn btn-p" href="#work">View work</a><a class="btn btn-s" href="#contact">Get in touch</a></div>
   </div>
   <div class="scroll">Scroll</div>
@@ -199,7 +215,7 @@ footer a:hover{color:#fff}
 <section id="work">
   <div class="eyebrow rv">Portfolio</div>
   <h2 class="rv">Selected work</h2>
-  <p class="rv">Press play to listen. Click a waveform to jump to any point.</p>
+  <p class="rv">Press play to watch. Click the bar to jump to any point.</p>
   <div class="grid" id="grid"></div>
   <div class="more" id="more"></div>
 </section>
@@ -209,9 +225,9 @@ footer a:hover{color:#fff}
   <h2 class="rv">Hi, I'm 6art7.</h2>
   <div class="ab">
     <div>
-      <p class="rv lead">I'm a sound effects artist who builds custom SFX for games, one layer at a time.</p>
+      <p class="rv lead">I'm a Roblox SFX artist who builds custom sound effects, one layer at a time.</p>
       <p class="rv">I don't rely on a single recording. Every effect is made from several parts: something low for weight, something sharper for detail, movement for life, and space to place it in the world. I edit, time and process each layer until they blend into one sound that feels right on screen.</p>
-      <p class="rv">I like working closely with game developers. I listen to what a moment should feel like, match the sound to the visuals and gameplay, and deliver clean, game-ready SFX that are easy to drop into a project.</p>
+      <p class="rv">I've been making SFX for Roblox games for over 1.5 years, and I like working closely with developers. I listen to what a moment should feel like, match the sound to the visuals and gameplay, and deliver clean, game-ready SFX that are easy to drop into a project.</p>
     </div>
     <div class="steps">
       <div class="rv"><small>01</small><b>Layer</b><span>Stack sounds that each do one job.</span></div>
@@ -224,9 +240,8 @@ footer a:hover{color:#fff}
 <section id="contact">
   <div class="eyebrow rv">Contact</div>
   <h2 class="rv">Let's work together</h2>
-  <p class="rv">Tell me about your game and the sounds you need. Email or Discord is the fastest way to reach me.</p>
+  <p class="rv">Tell me about your game and the sounds you need. Discord is the fastest way to reach me.</p>
   <div class="ct">
-    <div class="cc rv"><small>Email</small><b data-t="email"></b><div><a class="btn btn-p" data-l="email">Send an email</a><button class="btn btn-s" data-copy="email">Copy</button></div></div>
     <div class="cc rv" style="--i:1"><small>Discord</small><b data-t="discordName"></b><div><a class="btn btn-p" data-l="discord">Open Discord</a><button class="btn btn-s" data-copy="discordName">Copy username</button></div></div>
   </div>
 </section>
@@ -236,7 +251,7 @@ footer a:hover{color:#fff}
   <div class="fc">
     <div><div class="brand">6art7</div><small>SFX sound design for games.</small></div>
     <div class="fn"><a href="#studio">Process</a><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></div>
-    <div class="fs"><a data-l="youtube">YouTube</a><a data-l="discord">Discord</a><a data-l="x">X</a><a data-l="email">Email</a></div>
+    <div class="fs"><a data-l="youtube">YouTube</a><a data-l="discord">Discord</a><a data-l="x">X</a></div>
   </div>
   <small class="cp">© 2026 6art7. All rights reserved.</small>
 </footer>
@@ -262,77 +277,78 @@ nr.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>tgm(false)));
 addEventListener('keydown',e=>{if(e.key=='Escape'&&nr.classList.contains('open'))tgm(false,true)});
 matchMedia('(min-width:701px)').addEventListener('change',e=>{if(e.matches)tgm(false)});
 
-/* ===== EDIT YOUR CONTACT + SOCIAL LINKS HERE (all links on the site use these) ===== */
-const LINKS={email:'your-email@example.com',discord:'https://discord.gg/YOUR_INVITE',discordName:'your_discord_username',youtube:'https://www.youtube.com/@YOUR_CHANNEL',x:'https://x.com/YOUR_HANDLE'};
+/* ===== EDIT YOUR DISCORD + SOCIAL LINKS HERE (all links on the site use these) ===== */
+const LINKS={discord:'https://discord.gg/YOUR_INVITE',discordName:'your_discord_username',youtube:'https://www.youtube.com/@YOUR_CHANNEL',x:'https://x.com/YOUR_HANDLE'};
 const safeUrl=u=>/^\s*(javascript|data|vbscript):/i.test(u||'')?'':(u||'');
-document.querySelectorAll('[data-l]').forEach(a=>{const k=a.dataset.l,v=k=='email'?LINKS.email:safeUrl(LINKS[k]);if(!v){a.removeAttribute('href');return}a.href=k=='email'?'mailto:'+v+'?subject=SFX%20project':v;if(k!='email'){a.target='_blank';a.rel='noopener noreferrer'}});
+document.querySelectorAll('[data-l]').forEach(a=>{const v=safeUrl(LINKS[a.dataset.l]);if(!v){a.removeAttribute('href');return}a.href=v;a.target='_blank';a.rel='noopener noreferrer'});
 document.querySelectorAll('[data-t]').forEach(e=>e.textContent=LINKS[e.dataset.t]);
 document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async()=>{const o=b.textContent;try{await navigator.clipboard.writeText(LINKS[b.dataset.copy]);b.textContent='Copied'}catch(e){b.textContent='Copy failed'}setTimeout(()=>b.textContent=o,1400)});
 
 /* ===== EDIT YOUR PROJECTS HERE =====
- name, tag, desc | audio: path to your .wav/.mp3 (e.g. 'audio/impact.wav') | thumb: optional image path | link: optional URL
- Leave audio empty to use the built-in placeholder demo sample (demo: 'impact' | 'magic' | 'ui'). Add as many projects as you like. */
+ name, tag, desc
+ video:  path to your MP4, e.g. 'videos/my-project.mp4'  (H.264 video + AAC audio plays everywhere)
+ poster: optional image shown before the video plays, e.g. 'videos/my-project.jpg'
+ link:   optional URL (e.g. the game page). Add as many projects as you like. */
 const PROJECTS=[
- {name:'Layered Impact',tag:'Placeholder',desc:'Demo slot: a heavy hit built from sub, metal and tail layers. Replace with your own project.',audio:'',demo:'impact'},
- {name:'Magic Whoosh',tag:'Placeholder',desc:'Demo slot: a rising air sweep with shimmer on top. Replace with your own project.',audio:'',demo:'magic'},
- {name:'Interface Blips',tag:'Placeholder',desc:'Demo slot: short, clean UI feedback sounds. Replace with your own project.',audio:'',demo:'ui'}
+ {name:'Project One',tag:'Placeholder',desc:'Short description of the game or project and what you made for it.',video:'',poster:''},
+ {name:'Project Two',tag:'Placeholder',desc:'Short description of the game or project and what you made for it.',video:'',poster:''},
+ {name:'Project Three',tag:'Placeholder',desc:'Short description of the game or project and what you made for it.',video:'',poster:''}
 ];
-const ft=s=>{s=s||0;return Math.floor(s/60)+':'+(s%60).toFixed(1).padStart(4,'0')};
-const pk=(d,N=110)=>{const s=Math.floor(d.length/N),r=[];for(let i=0;i<N;i++){let m=0;for(let j=i*s;j<(i+1)*s&&j<d.length;j+=Math.max(1,s>>6))m=Math.max(m,Math.abs(d[j]));r.push(m)}const mx=Math.max(...r)||1;return r.map(v=>v/mx)};
-function synth(kind){const sr=22050,d=kind=='ui'?.6:2.2,n=sr*d|0,o=new Float32Array(n);let y=0;
- for(let i=0;i<n;i++){const t=i/sr,x=Math.random()*2-1;let v=0;
-  if(kind=='impact')v=Math.sin(6.2832*(42*t+9*(1-Math.exp(-14*t))))*Math.exp(-3*t)*.9+x*Math.exp(-28*t)*.5+(Math.sin(6.2832*830*t)+Math.sin(6.2832*1370*t))*Math.exp(-9*t)*.18+(t>.12?x*Math.exp(-2.2*t)*.06:0);
-  else if(kind=='magic'){y+=(.02+.5*t/d)*(x-y);v=y*5*Math.pow(Math.sin(Math.PI*Math.min(1,t/d)),1.5)+Math.sin(6.2832*(500+900*t)*t)*.12*Math.exp(-1.2*t)}
-  else v=Math.sin(6.2832*880*t)*Math.exp(-14*t)*.6+(t>.12?Math.sin(6.2832*1320*(t-.12))*Math.exp(-16*(t-.12))*.5:0);
-  o[i]=Math.max(-1,Math.min(1,v*.9))}
- return {data:o,sr}}
-function wav(o){const n=o.data.length,b=new DataView(new ArrayBuffer(44+n*2)),w=(p,s)=>[...s].forEach((ch,i)=>b.setUint8(p+i,ch.charCodeAt(0)));w(0,'RIFF');b.setUint32(4,36+n*2,true);w(8,'WAVEfmt ');b.setUint32(16,16,true);b.setUint16(20,1,true);b.setUint16(22,1,true);b.setUint32(24,o.sr,true);b.setUint32(28,o.sr*2,true);b.setUint16(32,2,true);b.setUint16(34,16,true);w(36,'data');b.setUint32(40,n*2,true);for(let i=0;i<n;i++)b.setInt16(44+i*2,o.data[i]*32767,true);return URL.createObjectURL(new Blob([b],{type:'audio/wav'}))}
+const ft=s=>{s=isFinite(s)?s:0;return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')};
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-const grid=document.getElementById('grid'),cur={a:null};
-const PLAY='<svg viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z"/></svg>',PAUSE='<svg viewBox="0 0 14 14"><path d="M2.5 1.5h3v11h-3zM8.5 1.5h3v11h-3z"/></svg>';
-let actx=null;
-/* audio is NOT loaded at page start: demo samples are built when a card nears the screen,
-   real files only when the visitor hovers/focuses/plays/seeks that card */
-const lazy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){lazy.unobserve(e.target);if(e.target._v)e.target._v()}}),{rootMargin:'200px'});
+const grid=document.getElementById('grid'),cur={v:null};
+const I={play:'<svg viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z"/></svg>',pause:'<svg viewBox="0 0 14 14"><path d="M2.5 1.5h3v11h-3zM8.5 1.5h3v11h-3z"/></svg>',vol:'<svg viewBox="0 0 16 16"><path d="M2 6h3l4-3.5v11L5 10H2z"/><path d="M11 5.5a3.5 3.5 0 010 5M12.8 3.7a6 6 0 010 8.6" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>',mute:'<svg viewBox="0 0 16 16"><path d="M2 6h3l4-3.5v11L5 10H2z"/><path d="M11.5 6l3.5 4M15 6l-3.5 4" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>',fs:'<svg viewBox="0 0 16 16"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" stroke="#fff" stroke-width="1.5" fill="none"/></svg>'};
+/* Videos are NOT loaded at page start (preload=none). Metadata loads when a card is hovered/focused, the file streams when played.
+   Only one video plays at a time, and a video pauses when scrolled out of view. */
+const vis=new IntersectionObserver(es=>es.forEach(e=>{if(e.intersectionRatio<.2&&e.target._pause)e.target._pause()}),{threshold:[0,.2]});
 PROJECTS.forEach((p,i)=>{
  const el=document.createElement('article');el.className='card rv';el.style.setProperty('--i',i%3);
  const g=`radial-gradient(circle at ${(25+i*23)%90}% ${(30+i*17)%80}%,#ffffff1f,#0000 55%),repeating-linear-gradient(90deg,#ffffff0b 0 2px,#0000 2px 10px),linear-gradient(${120+i*40}deg,#151515,#040404)`;
- const th=safeUrl(p.thumb),lk=safeUrl(p.link),nm=esc(p.name);
- el.innerHTML=`<div class="art">${th?`<img src="${esc(th)}" alt="${nm} thumbnail" loading="lazy" decoding="async">`:`<i style="background:${g}"></i><em>${String(i+1).padStart(2,'0')}</em>`}${p.tag?`<span class="tg">${esc(p.tag)}</span>`:''}</div><div class="cb"><b>${nm}</b><p>${esc(p.desc)}</p><div class="pl"><button class="pb" type="button" aria-label="Play ${nm}">${PLAY}</button><canvas class="wf" role="slider" tabindex="0" aria-label="Seek ${nm}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></canvas><span class="tm">0:00.0 / --:--</span></div>${lk?`<a class="btn btn-s lk" href="${esc(lk)}" target="_blank" rel="noopener noreferrer">View project</a>`:''}</div>`;
- const b=el.querySelector('.pb'),cvs=el.querySelector('.wf'),tm=el.querySelector('.tm'),x=cvs.getContext('2d');
- let au=null,P=Array(110).fill(.15),pend=null,dead=false,pkReq=false,drag=false;
- const dur=()=>au&&isFinite(au.duration)?au.duration:0;
- const frac=()=>dur()?au.currentTime/dur():0;
- const paint=()=>{const dp=Math.min(devicePixelRatio||1,2),w=cvs.clientWidth,h=cvs.clientHeight;if(!w)return;if(cvs.width!==Math.round(w*dp)||cvs.height!==Math.round(h*dp)){cvs.width=Math.round(w*dp);cvs.height=Math.round(h*dp)}x.setTransform(dp,0,0,dp,0,0);x.clearRect(0,0,w,h);const n=P.length,bw=w/n,pr=frac();for(let k=0;k<n;k++){const bh=Math.max(2,P[k]*h*.92);x.fillStyle=k/n<pr?'#fff':'#52525b';x.fillRect(k*bw+.5,(h-bh)/2,Math.max(1,bw-1.6),bh)}
-  if(!dead)tm.textContent=ft(au?au.currentTime:0)+' / '+(dur()?ft(dur()):'--:--');cvs.setAttribute('aria-valuenow',Math.round(pr*100));cvs.setAttribute('aria-valuetext',tm.textContent)};
- const setIcon=pl=>{b.innerHTML=pl?PAUSE:PLAY;b.setAttribute('aria-label',(pl?'Pause ':'Play ')+p.name)};
- const fail=msg=>{dead=true;b.disabled=true;b.setAttribute('aria-label','Audio unavailable: '+p.name);tm.textContent=msg;tm.setAttribute('role','status')};
- const tick=()=>{paint();if(au&&!au.paused)requestAnimationFrame(tick)};
- const peaks=()=>{if(pkReq||!p.audio)return;pkReq=true;fetch(p.audio).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(a=>{actx=actx||new (window.AudioContext||window.webkitAudioContext)();return actx.decodeAudioData(a)}).then(buf=>{P=pk(buf.getChannelData(0));paint()}).catch(()=>{})};
- function load(){
-  if(au||dead)return au;
-  au=new Audio();au.preload='metadata';
-  au.onplay=()=>{if(cur.a&&cur.a!==au)cur.a.pause();cur.a=au;setIcon(true);b.removeAttribute('aria-busy');tick()};
-  au.onpause=()=>{setIcon(false);paint()};
-  au.onended=()=>{au.currentTime=0;setIcon(false);paint()};
-  au.onwaiting=()=>b.setAttribute('aria-busy','true');
-  au.oncanplay=()=>b.removeAttribute('aria-busy');
-  au.onloadedmetadata=()=>{if(pend!=null&&dur()){au.currentTime=pend*dur();pend=null}paint()};
-  au.ondurationchange=au.onseeked=paint;
-  au.onerror=()=>fail(au.error&&au.error.code===4?'File missing or unsupported':'Audio failed to load');
-  if(p.audio)au.src=p.audio;else if(p.demo){const o=synth(p.demo);P=pk(o.data);au.src=wav(o)}
-  return au}
- b.onclick=()=>{const a=load();if(!a||dead)return;peaks();if(a.paused){const r=a.play();if(r&&r.catch)r.catch(err=>{if(err.name!=='AbortError')fail('Playback failed')})}else a.pause()};
- const seek=f=>{f=Math.max(0,Math.min(.999,f));const a=load();if(!a||dead)return;peaks();if(dur()){a.currentTime=f*dur();paint()}else pend=f};
- const fx=e=>{const r=cvs.getBoundingClientRect();return(e.clientX-r.left)/Math.max(1,r.width)};
- cvs.addEventListener('pointerdown',e=>{drag=true;try{cvs.setPointerCapture(e.pointerId)}catch(_){}seek(fx(e))});
- cvs.addEventListener('pointermove',e=>{if(drag)seek(fx(e))});
- ['pointerup','pointercancel'].forEach(t=>cvs.addEventListener(t,()=>{drag=false}));
- cvs.addEventListener('keydown',e=>{const d={ArrowLeft:-.05,ArrowRight:.05}[e.key];if(d!=null){e.preventDefault();seek(frac()+d)}else if(e.key=='Home'){e.preventDefault();seek(0)}else if(e.key=='End'){e.preventDefault();seek(1)}else if(e.key==' '){e.preventDefault();b.click()}});
- if(!p.audio&&!p.demo){b.disabled=true;tm.textContent='No audio'}
- else{const intent=()=>{if(!au&&!dead)load()};el.addEventListener('pointerenter',intent,{once:true});el.addEventListener('focusin',intent,{once:true});el._v=()=>{if(!p.audio&&p.demo)load()}}
- new ResizeObserver(paint).observe(cvs);
- grid.appendChild(el);io.observe(el);lazy.observe(el)});
+ const src=safeUrl(p.video),post=safeUrl(p.poster),lk=safeUrl(p.link),nm=esc(p.name);
+ el.innerHTML=`<div class="art"${src?` tabindex="0" role="group" aria-label="Video player: ${nm}"`:''}><i style="background:${g}"></i><em>${String(i+1).padStart(2,'0')}</em>${p.tag?`<span class="tg">${esc(p.tag)}</span>`:''}<button class="vbig" type="button" aria-label="Play ${nm}"${src?'':' disabled'}>${I.play}</button>${src?`<div class="vc"><button class="vp" type="button" aria-label="Play">${I.play}</button><div class="vs" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="vb"><u></u></span></div><span class="vt">0:00 / --:--</span><button class="vm" type="button" aria-label="Mute">${I.vol}</button><button class="vz" type="button" aria-label="Fullscreen">${I.fs}</button></div>`:'<span class="vmsg">Add your MP4 in PROJECTS</span>'}</div><div class="cb"><b>${nm}</b><p>${esc(p.desc)}</p>${lk?`<a class="btn btn-s lk" href="${esc(lk)}" target="_blank" rel="noopener noreferrer">View project</a>`:''}</div>`;
+ const art=el.querySelector('.art');
+ if(src){
+  const v=document.createElement('video');v.preload='none';v.setAttribute('playsinline','');v.setAttribute('aria-label',p.name);v.src=src;
+  if(post){v.poster=post;art.classList.add('on')}
+  art.insertBefore(v,art.firstChild);
+  const q=t=>art.querySelector(t),bp=q('.vbig'),pb=q('.vp'),sl=q('.vs'),fill=q('.vb u'),vt=q('.vt'),mu=q('.vm'),fz=q('.vz');
+  let dead=false,hide=0,drag=false,pend=null;
+  const dur=()=>isFinite(v.duration)?v.duration:0,fr=()=>dur()?v.currentTime/dur():0;
+  const paint=()=>{const f=fr();fill.style.transform='scaleX('+f+')';sl.setAttribute('aria-valuenow',Math.round(f*100));vt.textContent=ft(v.currentTime)+' / '+(dur()?ft(dur()):'--:--')};
+  const tick=()=>{paint();if(!v.paused&&!v.ended)requestAnimationFrame(tick)};
+  const show=()=>{art.classList.add('show');clearTimeout(hide);if(!v.paused)hide=setTimeout(()=>art.classList.remove('show'),2500)};
+  const label=pl=>{pb.innerHTML=pl?I.pause:I.play;pb.setAttribute('aria-label',pl?'Pause':'Play');bp.setAttribute('aria-label',(pl?'Pause ':'Play ')+p.name)};
+  const fail=m=>{if(dead)return;dead=true;art.classList.remove('pl');art.removeAttribute('aria-busy');pb.disabled=bp.disabled=mu.disabled=true;sl.setAttribute('aria-disabled','true');art.insertAdjacentHTML('beforeend','<span class="vmsg" role="status">'+esc(m)+'</span>')};
+  const toggle=()=>{if(dead)return;if(v.paused||v.ended){const r=v.play();if(r&&r.catch)r.catch(e=>{if(e.name!=='AbortError')fail('Playback failed. Try an H.264 MP4.')})}else v.pause()};
+  const seek=f=>{if(dead)return;f=Math.max(0,Math.min(.999,f));if(dur()){v.currentTime=f*dur();paint()}else{pend=f;if(v.readyState===0){v.preload='metadata';v.load()}}};
+  const fs=()=>{const d=document;if(d.fullscreenElement||d.webkitFullscreenElement)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else if(art.requestFullscreen)art.requestFullscreen();else if(art.webkitRequestFullscreen)art.webkitRequestFullscreen();else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen()};
+  if(!(art.requestFullscreen||art.webkitRequestFullscreen||v.webkitEnterFullscreen))fz.hidden=true;
+  v.onplay=()=>{if(cur.v&&cur.v!==v)cur.v.pause();cur.v=v;art.classList.add('on','pl');label(true);show();tick()};
+  v.onpause=()=>{label(false);art.classList.remove('pl');art.classList.add('show');clearTimeout(hide);paint()};
+  v.onended=()=>{label(false);art.classList.remove('pl');art.classList.add('show');paint()};
+  v.onwaiting=()=>art.setAttribute('aria-busy','true');
+  v.onplaying=v.oncanplay=()=>art.removeAttribute('aria-busy');
+  v.onloadedmetadata=()=>{if(pend!=null&&dur()){v.currentTime=pend*dur();pend=null}paint()};
+  v.ontimeupdate=v.ondurationchange=v.onseeked=paint;
+  v.onvolumechange=()=>{const m=v.muted||v.volume===0;mu.innerHTML=m?I.mute:I.vol;mu.setAttribute('aria-label',m?'Unmute':'Mute')};
+  v.onerror=()=>fail(v.error&&v.error.code===4?'Video file missing or unsupported. Use an H.264 MP4.':'Video failed to load.');
+  bp.onclick=pb.onclick=toggle;v.addEventListener('click',toggle);
+  mu.onclick=()=>{v.muted=!v.muted};fz.onclick=fs;
+  const fx=e=>{const r=sl.getBoundingClientRect();return(e.clientX-r.left)/Math.max(1,r.width)};
+  sl.addEventListener('pointerdown',e=>{drag=true;try{sl.setPointerCapture(e.pointerId)}catch(_){}seek(fx(e))});
+  sl.addEventListener('pointermove',e=>{if(drag)seek(fx(e))});
+  ['pointerup','pointercancel'].forEach(t=>sl.addEventListener(t,()=>{drag=false}));
+  art.addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('button'))return;const k=e.key,d=dur()||1;
+   if(k==' '||k=='k'||k=='K'){e.preventDefault();toggle()}else if(k=='m'||k=='M')v.muted=!v.muted;else if(k=='f'||k=='F')fs();
+   else if(k=='ArrowLeft'){e.preventDefault();seek((v.currentTime-5)/d)}else if(k=='ArrowRight'){e.preventDefault();seek((v.currentTime+5)/d)}
+   else if(k=='Home'){e.preventDefault();seek(0)}else if(k=='End'){e.preventDefault();seek(1)}show()});
+  ['pointermove','pointerdown','focusin'].forEach(t=>art.addEventListener(t,show));
+  const intent=()=>{if(!dead&&v.preload==='none'&&v.readyState===0&&v.paused){v.preload='metadata';v.load()}};
+  art.addEventListener('pointerenter',intent,{once:true});art.addEventListener('focusin',intent,{once:true});
+  el._pause=()=>{if(!v.paused)v.pause()};
+  mu.innerHTML=I.vol;label(false);paint();
+ }
+ grid.appendChild(el);io.observe(el);vis.observe(el)});
 const LIM=6;
 if(PROJECTS.length>LIM){const m=document.getElementById('more'),cs=[...grid.children],bt=document.createElement('button');bt.type='button';bt.className='btn btn-s';let open=false;const set=()=>{cs.forEach((e,i)=>e.hidden=!open&&i>=LIM);bt.textContent=open?'Show fewer':'Show all '+PROJECTS.length+' projects';bt.setAttribute('aria-expanded',open)};set();bt.onclick=()=>{open=!open;set()};m.appendChild(bt)}
 
